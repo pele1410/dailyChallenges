@@ -22,8 +22,6 @@ numcompare("MM", "MDCCCCLXXXXVIIII") => false
 You only need to correctly handle the case where there are at most 1 each of D, L, and V, and at most 4 each of C, X, and I. You don't need to validate the input, but you can if you want. Any behavior for invalid inputs like numcompare("V", "IIIIIIIIII") is fine - true, false, or error.
 '''
 
-import unittest
-
 def numeral_values ():
         return {"M":1000,"D":500,"C":100,"L":50,"X":10,"V":5,"I":1}
 
@@ -61,7 +59,6 @@ def numeral_to_int(numeral_):
                         sum += new_value - last_value
                 else:
                         message = "Invalid consectutive numerals:"+last_letters+letter
-                        print(message)
                         raise RuntimeError(message)
                         
                 last_value = new_value
@@ -75,40 +72,16 @@ def compare_numerals (numeral1_, numeral2_):
 
         return int1<int2
 
-class TestNumerals(unittest.TestCase):
-        def setUp(self):
-                pass
-        def tearDown(self):
-                pass
-
-        def test_valid_values(self):
-                self.assertFalse (compare_numerals ("I", "I"))
-                self.assertTrue (compare_numerals ("I", "II"))
-                self.assertFalse (compare_numerals ("II", "I"))
-                self.assertFalse (compare_numerals ("V", "IIII"))
-                self.assertFalse (compare_numerals ("V", "IV"))
-                self.assertTrue (compare_numerals ("MDCLXV","MDCLXVI"))
-                self.assertFalse (compare_numerals ("MM","MDCCCCLXXXXVIIII"))
-                self.assertTrue (compare_numerals ("IX","X"))
-                self.assertTrue (compare_numerals ("X","CIX"))
-
-        def test_empty_Input(self):
-                self.assertRaises (ValueError, compare_numerals, "I", "")
-                self.assertRaises (ValueError, compare_numerals, "", "I")
-                self.assertRaises (ValueError, compare_numerals, "", "")
-
-        def test_invalid_numerals(self):
-                self.assertRaises (KeyError, compare_numerals, "2", "1")
-                self.assertRaises (KeyError, compare_numerals, "I", "I1")
-                self.assertRaises (KeyError, compare_numerals, "LKI", "I")
-                self.assertRaises (KeyError, compare_numerals, "L I", "I")
-
-        def test_invalid_sequence(self):
-                self.assertRaises (RuntimeError, compare_numerals, "ID", "D")
-                self.assertRaises (RuntimeError, compare_numerals, "VX", "X")
-                self.assertRaises (RuntimeError, compare_numerals, "IL", "X")
-                '''This case is not handled'''
-                self.assertRaises (RuntimeError, compare_numerals, "CCCIIX", "X")
-
 if __name__ == "__main__":
-        unittest.main()
+        numeral1 = input("First Roman Numeral:")
+        numeral2 = input("Second Roman Numeral:")
+        
+        try:
+                success = compare_numerals (numeral1, numeral2)
+                print(numeral1, "is" if success else "is not", "less than", numeral2)
+        except ValueError as e:
+                print(e.args[0])
+        except RuntimeError as e:
+                print(e.args[0])
+        except KeyError as e:
+                print("Invalid numeral character:",e.args[0])
