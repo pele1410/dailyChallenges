@@ -9,7 +9,7 @@ https://www.reddit.com/r/dailyprogrammer/comments/oe9qnb/20210705_challenge_397_
 
 For the purpose of today's challenge, a Roman numeral is a non-empty string of the characters M, D, C, L, X, V, and I, each of which has the value 1000, 500, 100, 50, 10, 5, and 1. The characters are arranged in descending order, and the total value of the numeral is the sum of the values of its characters. For example, the numeral MDCCXXVIIII has the value 1000 + 500 + 2x100 + 2x10 + 5 + 4x1 = 1729.
 
-This challenge uses only additive notation for roman numerals. There's also subtractive notation, where 9 would be written as IX. You don't need to handle subtractive notation (but you can if you want to, as an optional bonus).
+This challenge uses only additive notation for roman numerals. There's also subtractive notation, where 9 would be written as IX. You don't need to handle subtractive notation(but you can if you want to, as an optional bonus).
 
 Given two Roman numerals, return whether the first one is less than the second one:
 
@@ -22,7 +22,7 @@ numcompare("MM", "MDCCCCLXXXXVIIII") => false
 You only need to correctly handle the case where there are at most 1 each of D, L, and V, and at most 4 each of C, X, and I. You don't need to validate the input, but you can if you want. Any behavior for invalid inputs like numcompare("V", "IIIIIIIIII") is fine - true, false, or error.
 '''
 
-def numeral_values ():
+def numeral_values():
         return {"M":1000,"D":500,"C":100,"L":50,"X":10,"V":5,"I":1}
 
 def is_subtraction_valid(left_value_, right_value_, last_letters_):
@@ -44,7 +44,7 @@ def is_subtraction_valid(left_value_, right_value_, last_letters_):
 
 def numeral_to_int(numeral_):
         if not numeral_:
-                raise ValueError ("Empty numeral input")
+                raise ValueError("Empty numeral input")
 
         sum = 0
         dict = numeral_values();
@@ -66,22 +66,25 @@ def numeral_to_int(numeral_):
 
         return sum
 
-def compare_numerals (numeral1_, numeral2_):
+def compare_numerals(numeral1_, numeral2_):
         int1 = numeral_to_int(numeral1_)
         int2 = numeral_to_int(numeral2_)
 
-        return int1<int2
+        return int1<int2, int1, int2
 
-if __name__ == "__main__":
+def main():
         numeral1 = input("First Roman Numeral:")
         numeral2 = input("Second Roman Numeral:")
         
         try:
-                success = compare_numerals (numeral1, numeral2)
-                print(numeral1, "is" if success else "is not", "less than", numeral2)
+                success, numeralInt1, numeralInt2 = compare_numerals(numeral1, numeral2)
+                print(numeral1, "(", numeralInt1, ")", "is" if success else "is not", "less than", numeral2,"(", numeralInt2, ")")
         except ValueError as e:
                 print(e.args[0])
         except RuntimeError as e:
                 print(e.args[0])
         except KeyError as e:
                 print("Invalid numeral character:",e.args[0])
+
+if __name__ == "__main__":
+        main()
