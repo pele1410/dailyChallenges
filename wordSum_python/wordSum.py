@@ -45,71 +45,75 @@
 import os.path
 import sys
 
-def dictionary ():
-        DICTIONARY_FILE = "words.txt"
 
-        if not os.path.isfile(DICTIONARY_FILE):
-                print('Dictionary file does not exist:', DICTIONARY_FILE)
-                return {}
-        else:
-                with open(DICTIONARY_FILE) as f:
-                        lines = f.read().splitlines()
-        
-        return lines
+def dictionary():
+    DICTIONARY_FILE = "words.txt"
 
-def letterValue (letter_):
-        return ord(letter_.lower())-96
+    if not os.path.isfile(DICTIONARY_FILE):
+        print('Dictionary file does not exist:', DICTIONARY_FILE)
+        return {}
+    else:
+        with open(DICTIONARY_FILE) as f:
+            lines = f.read().splitlines()
+
+    return lines
+
+
+def letterValue(letter_):
+    return ord(letter_.lower())-96
+
 
 def wordSum(word_):
-        sum = 0
-        for letter in word_:
-                sum += letterValue(letter)
+    sum = 0
+    for letter in word_:
+        sum += letterValue(letter)
 
-        return sum
+    return sum
+
 
 def findWordsWithSum(sum_):
-        for line in dictionary ():
-                sum = wordSum(line)
-                if sum == sum_:
-                        print(line,"has sum of", sum_)
+    for line in dictionary():
+        sum = wordSum(line)
+        if sum == sum_:
+            print(line, "has sum of", sum_)
+
 
 def printMaxSum():
-        allSums = {}
-        for line in dictionary ():
-                sum = wordSum(line)
-                newSum = allSums.get(sum,0)
-                allSums[sum] = newSum+1
+    allSums = {}
+    for line in dictionary():
+        sum = wordSum(line)
+        newSum = allSums.get(sum, 0)
+        allSums[sum] = newSum+1
 
-        maxSum = -1
-        maxSums = []
-        for sum in allSums.keys():
-                if allSums[sum] >= maxSum:
-                        maxSum = allSums[sum]
-                        maxSums.append(sum)
+    maxSum = -1
+    maxSums = []
+    for sum in allSums.keys():
+        if allSums[sum] >= maxSum:
+            maxSum = allSums[sum]
+            maxSums.append(sum)
 
-        for sum in maxSums:
-                print("Sum of",sum,"has max sum of", maxSum)
+    for sum in maxSums:
+        print("Sum of", sum, "has max sum of", maxSum)
+
 
 def printAllSums():
-        for line in dictionary ():
-                sum = wordSum(line)
-                print(line,"has sum of", sum)
-
+    for line in dictionary():
+        sum = wordSum(line)
+        print(line, "has sum of", sum)
 
 
 # Main loop
 argc = len(sys.argv)
 
 try:
-        if sys.argv[1] == "all":
-                printAllSums()
-        elif sys.argv[1] == "max":
-                printMaxSum()
-        elif sys.argv[1] == "sum":
-                try:
-                        findWordsWithSum(int(sys.argv[2]))
-                except ValueError:
-                        print("Invalid input, please try again")
+    if sys.argv[1] == "all":
+        printAllSums()
+    elif sys.argv[1] == "max":
+        printMaxSum()
+    elif sys.argv[1] == "sum":
+        try:
+            findWordsWithSum(int(sys.argv[2]))
+        except ValueError:
+            print("Invalid input, please try again")
 except IndexError:
-        print("Missing required arguments")
-
+    print("Missing required arguments")
